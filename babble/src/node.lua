@@ -4,6 +4,8 @@ local Class      = require(Path..".class")
 local Components = require(Path..".components")
 
 local Node = Class()
+local NodeInstance = Class()
+
 Node.custom = {
    colors     = {},
    typeSpeeds = {},
@@ -25,11 +27,13 @@ function Node:init(parent, id, custom)
       color     = self.default.color,
       typeSpeed = self.default.typeSpeed,
       typeSound = self.default.typeSound,
-
-      component = 1,
    }
 
    self.components = {}
+end
+
+function Node:newInstance ()
+  return NodeInstance(self)
 end
 
 function Node:setColor(color)
@@ -63,17 +67,23 @@ function Node:endNode()
    return self.parent
 end
 
-function Node:update(dt)
-   local component = self.components[self.current.component]
+function NodeInstance:init(node)
+  self.node = node
+  self.current = 1
+  self.parent = node.parent
+end
+
+function NodeInstance:update(dt)
+   local component = self.node.components[self.current]
 
    if component then
       local state = component:update(dt)
 
       if state then
-         self.current.component = self.current.component + 1
+         self.current = self.current + 1
 
          if type(state) == "string" then
-            self.parent.currentNode = state
+            self.parent:push(state)
          end
       end
    else
@@ -81,7 +91,7 @@ function Node:update(dt)
    end
 end
 
-function Node:draw()
+function NodeInstance:draw()
 end
 
 for name, component in pairs(Components) do
