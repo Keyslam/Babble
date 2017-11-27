@@ -1,12 +1,11 @@
 local Path = (...):gsub('%.init$', '')
 
-local Namespace = require(Path..".src.namespace")
+local Babble = {}
 
-Namespace.class = require(Path..".lib.middleclass")
+Babble.class      = require(Path..".src.class")
+Babble.components = require(Path..".src.components")
+Babble.node       = require(Path..".src.node")
+Babble.dialogue   = require(Path..".src.dialogue")
+Babble.condition  = require(Path..".src.condition")
 
-Namespace.components = require(Path..".src.components")
-Namespace.node       = require(Path..".src.node")
-Namespace.dialogue   = require(Path..".src.dialogue")
-Namespace.condition  = require(Path..".src.condition")
-
-return Namespace
+return Babble

@@ -1,10 +1,10 @@
-local Namespace = require((...):gsub('%.[^%.]+$', '')..".namespace")
-local Class     = Namespace.class
-local Node      = Namespace.node
+local Path = (...):gsub('%.[^%.]+$', '')
 
-local Dialogue = Class("Dialogue")
+local Class = require(Path..".class")
+local Node  = require(Path..".node")
 
-function Dialogue:initialize()
+local Dialogue = Class()
+function Dialogue:init()
    self.nodes       = {}
    self.currentNode = "start"
 

@@ -1,8 +1,9 @@
-local Namespace = require((...):gsub('%.[^%.]+$', '')..".namespace")
-local Class     = Namespace.class
+local Path = (...):gsub('%.[^%.]+$', '')
 
-local Text = Class("Text")
-function Text:initialize(node, str, color, typeSpeed, typeSound)
+local Class = require(Path..".class")
+
+local Text = Class()
+function Text:init(node, str, color, typeSpeed, typeSound)
    self.node      = node
    self.str       = str
    self.color     = color
@@ -15,8 +16,8 @@ function Text:update(dt)
 end
 
 
-local Pause = Class("Pause")
-function Pause:initialize(node, delay)
+local Pause = Class()
+function Pause:init(node, delay)
    self.node    = node
    self.delay   = delay
    self.current = 0
@@ -31,8 +32,8 @@ function Pause:update(dt)
 end
 
 
-local Print = Class("Print")
-function Print:initialize(node, str)
+local Print = Class()
+function Print:init(node, str)
    self.node = node
    self.str  = str
 end
@@ -44,8 +45,8 @@ function Print:update(dt)
 end
 
 
-local Script = Class("Script")
-function Script:initialize(node, func, args)
+local Script = Class()
+function Script:init(node, func, args)
    self.node = node
    self.func = func
    self.args = args or {}

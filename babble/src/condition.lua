@@ -1,9 +1,9 @@
-local Namespace = require((...):gsub('%.[^%.]+$', '')..".namespace")
-local Class     = Namespace.class
+local Path = (...):gsub('%.[^%.]+$', '')
 
-local Condition = Class("Condition")
+local Class = require(Path..".class")
 
-function Condition:initialize(func, env, index, ...)
+local Condition = Class()
+function Condition:init(func, env, index, ...)
    self.func    = func
    self.env     = env
    self.index   = index

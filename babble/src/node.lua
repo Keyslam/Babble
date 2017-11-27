@@ -1,15 +1,16 @@
-local Namespace  = require((...):gsub('%.[^%.]+$', '')..".namespace")
-local Class      = Namespace.class
-local Components = Namespace.components
+local Path = (...):gsub('%.[^%.]+$', '')
 
-local Node = Class("Node")
+local Class      = require(Path..".class")
+local Components = require(Path..".components")
+
+local Node = Class()
 Node.custom = {
    colors     = {},
    typeSpeeds = {},
    typeSounds = {},
 }
 
-function Node:initialize(parent, id, custom)
+function Node:init(parent, id, custom)
    self.parent = parent
    self.id     = id
    self.custom = custom
