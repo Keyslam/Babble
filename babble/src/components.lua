@@ -46,25 +46,26 @@ end
 
 
 local Script = Class()
-function Script:init(node, func, args)
+function Script:init(node, func, ...)
    self.node = node
    self.func = func
-   self.args = args or {}
+   self.args = {..., n = select('#', ...)}
 end
 
 function Script:update(dt)
-   return self.func(self.node, dt, self.args)
+   return self.func(self.node, dt, unpack(self.args, self.args.n))
 end
 
 
 local Link = Class()
-function Link:init(node, func)
+function Link:init(node, func, ...)
    self.node = node
    self.func = func
+   self.args = {..., n = select('#', ...)}
 end
 
 function Link:update(dt)
-   return self.func() or true
+   return self.func(dt, unpack(self.args, 1, self.args.n)) or true
 end
 
 
