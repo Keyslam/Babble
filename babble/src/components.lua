@@ -56,9 +56,37 @@ function Script:update(dt)
    return self.func(self.node, dt, self.args)
 end
 
+
+local Link = Class()
+function Link:init(node, func)
+   self.node = node
+   self.func = func
+end
+
+function Link:update(dt)
+   return self.func() or true
+end
+
+
+local Setter = Class()
+function Setter:init(node, env, index, value)
+   self.node  = node
+   self.env   = env
+   self.index = index
+   self.value = value
+end
+
+function Setter:update()
+   self.env[self.index] = self.value
+
+   return true
+end
+
 return {
    text   = Text,
    pause  = Pause,
    print  = Print,
    script = Script,
+   link   = Link,
+   setter = Setter,
 }

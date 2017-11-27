@@ -67,10 +67,14 @@ function Node:update(dt)
    local component = self.components[self.current.component]
 
    if component then
-      local finished = component:update(dt)
+      local state = component:update(dt)
 
-      if finished then
+      if state then
          self.current.component = self.current.component + 1
+
+         if type(state) == "string" then
+            self.parent.currentNode = state
+         end
       end
    else
       return true
