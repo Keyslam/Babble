@@ -60,11 +60,24 @@ end
 local Link = Class()
 function Link:init(node, func)
    self.node = node
-   self.func = func
+   local mt = getmetatable(func)
+   if type(func) == 'function' or mt and type(mt.__call) == 'function' then
+      self.func = func
+   elseif type(func) == 'string' then
+      self.link = func
+   --[[
+   else
+      error("bad argument #1 to 'link' (function expected)", 3)
+   ]]
+   end
 end
 
 function Link:update(dt)
-   return self.func() or true
+   if self.link then
+      return self.link
+   else
+      return self.func() or true
+   end
 end
 
 
