@@ -11,7 +11,9 @@ local d = Babble.dialogue()
 
       :link(function()
          return preference == "chocolate" and "likes_chocolate" or "likes_strawberry"
-      end, true) -- True so it will link back when done
+      end)
+
+      :print('Eat as much as you want!')
    :endNode()
 
    :startNode("likes_chocolate")
@@ -21,6 +23,8 @@ local d = Babble.dialogue()
    :startNode("likes_strawberry")
       :print("Strawberry is really nice, yeah.")
    :endNode()
+
+   :switch('start')
 
 function love.update(dt)
    d:update(dt)
