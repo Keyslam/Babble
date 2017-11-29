@@ -5,7 +5,6 @@ local Node  = require(Path..".node")
 
 local Dialogue = Class()
 function Dialogue:init()
-   self.finished = false
    self.nodes    = {}
    self.stack    = {}
 
@@ -27,8 +26,9 @@ function Dialogue:switch(id)
       error(("Invalid node id '%s'"):format(id), 2)
    end
 
-   self.finished = false
-   self.stack = {node:newInstance()}
+   local instance = node:newInstance()
+   self.stack = {instance}
+   self.current = instance
 
    return self
 end
@@ -40,8 +40,9 @@ function Dialogue:push(id)
       error(("Invalid node id '%s'"):format(id), 2)
    end
 
-   self.finished = false
-   self.stack[#self.stack + 1] = node:newInstance()
+   local instance = node:newInstance()
+   self.stack[#self.stack + 1] = instance
+   self.current = instance
 
    return self
 end
@@ -49,22 +50,27 @@ end
 function Dialogue:pop()
    self.stack[#self.stack] = nil
 
-   if #self.stack == 0 then
-     self.finished = true
-   end
+   self.current = self.stack[#self.stack]
 
    return self
 end
 
 function Dialogue:update(dt)
-   local node = self.stack[#self.stack]
+   while self.current do
+      local continue, state = self.current:update(dt)
 
-   if node then
-      if node:update(dt) then
-        self:pop()
-        return self.finished
+      if continue then
+         if type(state) == "string" then
+            self:push(state)
+         elseif state == nil then
+            self:pop(state)
+         end
+      else
+         break
       end
    end
+
+   return not self.current
 end
 
 function Dialogue:draw(x, y, w, h)
