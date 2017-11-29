@@ -1,13 +1,22 @@
 local Babble = require("babble")
 
+local last_pressed = nil
 preference = nil
 
 local d = Babble.dialogue()
    :startNode("start")
       :print("Hello and welcome to Burber Burb")
-      :print("Do you like chocolate or strawberry?")
+      :print("Do you like [c]hocolate or [s]trawberry?")
 
-      :setter(_G, "preference", "chocolate") -- Replaced by a option later
+      :script(function()
+         if last_pressed == "c" then
+            preference = "chocolate"
+            return true
+         elseif last_pressed == "s" then
+            preference = "strawberry"
+            return true
+         end
+      end)
 
       :link(function()
          return preference == "chocolate" and "likes_chocolate" or "likes_strawberry"
@@ -32,4 +41,8 @@ end
 
 function love.draw()
    d:draw()
+end
+
+function love.keypressed(key)
+   last_pressed = key
 end

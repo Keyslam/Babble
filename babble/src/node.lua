@@ -74,20 +74,25 @@ function NodeInstance:init(node)
 end
 
 function NodeInstance:update(dt)
-   local component = self.node.components[self.current]
+   while true do
+      local component = self.node.components[self.current]
 
-   if component then
-      local state = component:update(dt)
+      if component then
+         local state = component:update(dt)
 
-      if state then
-         self.current = self.current + 1
+         if state then
+            self.current = self.current + 1
 
-         if type(state) == "string" then
-            self.parent:push(state)
+            if type(state) == "string" then
+               self.parent:push(state)
+               break
+            end
+         else
+            break
          end
+      else
+         return true
       end
-   else
-      return true
    end
 end
 
