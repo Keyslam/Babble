@@ -6,6 +6,5 @@ Babble.class      = require(Path..".src.class")
 Babble.components = require(Path..".src.components")
 Babble.node       = require(Path..".src.node")
 Babble.dialogue   = require(Path..".src.dialogue")
-Babble.condition  = require(Path..".src.condition")
 
 return Babble
