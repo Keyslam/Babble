@@ -24,7 +24,7 @@ local d = Babble.dialogue()
       :print("Strawberry is really nice, yeah.")
    :endNode()
 
-   :switch('start')
+   :switch("start")
 
 function love.update(dt)
    d:update(dt)

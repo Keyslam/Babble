@@ -6,8 +6,8 @@ local Node  = require(Path..".node")
 local Dialogue = Class()
 function Dialogue:init()
    self.finished = false
-   self.nodes       = {}
-   self.stack       = {}
+   self.nodes    = {}
+   self.stack    = {}
 
    self.buffer = {}
 end
