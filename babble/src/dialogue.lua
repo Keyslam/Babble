@@ -3,6 +3,30 @@ local Path = (...):gsub('%.[^%.]+$', '')
 local Class = require(Path..".class")
 local Node  = require(Path..".node")
 
+local function isCallable (f)
+  if type(f) == 'function' then
+    return true
+  elseif type(f) == 'table' then
+    local mt = getmetatable(f)
+    if mt and type(mt.__call) == 'function' then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function getNodeInstance (parent, id)
+   local constructor = parent.nodes[id]
+
+   if not constructor then
+       error(("Invalid node id '%s'"):format(id), 3)
+   end
+
+   local node = Node(parent, id)
+   return constructor(node) or node
+end
+
 local Dialogue = Class()
 function Dialogue:init()
    self.nodes    = {}
@@ -12,22 +36,19 @@ function Dialogue:init()
    self.namedBuffer = {}
 end
 
-function Dialogue:startNode(id, custom)
-   local node = Node(self, id, custom)
+function Dialogue:addNode(id, constructor)
+   if not isCallable(constructor) then
+      error("Node Constructor should be a function", 2)
+   end
 
-   self.nodes[id] = node
+   self.nodes[id] = constructor
 
-   return node
+   return self
 end
 
 function Dialogue:switch(id)
-   local node = self.nodes[id]
+   local instance = getNodeInstance(self, id)
 
-   if not node then
-      error(("Invalid node id '%s'"):format(id), 2)
-   end
-
-   local instance = node:newInstance()
    self.stack = {instance}
    self.current = instance
 
@@ -35,13 +56,8 @@ function Dialogue:switch(id)
 end
 
 function Dialogue:push(id)
-   local node = self.nodes[id]
+   local instance = getNodeInstance(self, id)
 
-   if not node then
-      error(("Invalid node id '%s'"):format(id), 2)
-   end
-
-   local instance = node:newInstance()
    self.stack[#self.stack + 1] = instance
    self.current = instance
 
@@ -95,7 +111,7 @@ function Dialogue:draw(x, y, w, h, drawBB)
    end
 
    local font = love.graphics.getFont()
-   
+
    local rw, lines  = font:getWrap(totalText, w)
    local lineHeight = font:getHeight()
    local height     = #lines * lineHeight
