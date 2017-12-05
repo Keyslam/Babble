@@ -1,36 +1,29 @@
 local Babble = require("babble")
 
-local last_pressed = nil
-preference = nil
+local font = love.graphics.newFont("LCD_Solid.ttf", 25)
+
+
+local count = 0
 
 local d = Babble.dialogue()
    :startNode("start")
-      :print("Hello and welcome to Burber Burb")
-      :print("Do you like [c]hocolate or [s]trawberry?")
-
-      :script(function()
-         if last_pressed == "c" then
-            preference = "chocolate"
-            return true
-         elseif last_pressed == "s" then
-            preference = "strawberry"
-            return true
-         end
-      end)
-
-      :link(function()
-         return preference == "chocolate" and "likes_chocolate" or "likes_strawberry"
-      end)
-
-      :print('Eat as much as you want!')
-   :endNode()
-
-   :startNode("likes_chocolate")
-      :print("But you'll get pimples!")
-   :endNode()
-
-   :startNode("likes_strawberry")
-      :print("Strawberry is really nice, yeah.")
+      :pause(2)
+      :text("My dialogue system is coming along nicely.\n"):wait()
+      :text("It has got"):wait():text("."):wait():text("."):wait():text("."):wait():text(" pauses.\n"):wait()
+      :text("C", nil,  {color = {255,   0,   0}})
+      :text("o", nil,  {color = {  0, 255,   0}})
+      :text("l", nil,  {color = {  0,   0, 255}})
+      :text("o", nil,  {color = {255,   0,   0}})
+      :text("r", nil,  {color = {  0, 255,   0}})
+      :text("e", nil,  {color = {  0,   0, 255}})
+      :text("d ", nil, {color = {255,   0,   0}})
+      :text("t", nil,  {color = {  0, 255,   0}})
+      :text("e", nil,  {color = {  0,   0, 255}})
+      :text("x", nil,  {color = {255,   0,   0}})
+      :text("t", nil,  {color = {  0, 255,   0}})
+      :text("!\n"):wait()
+      :text("And much more!\n")
+      :text("a\na\na\na\n")
    :endNode()
 
    :switch("start")
@@ -40,7 +33,9 @@ function love.update(dt)
 end
 
 function love.draw()
-   d:draw()
+   love.graphics.setFont(font)
+   love.graphics.rectangle("line", 10, 460, 620, 170)
+   d:draw(20, 470, 600, 150)
 end
 
 function love.keypressed(key)
