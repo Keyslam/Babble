@@ -6,7 +6,7 @@ local count = 0
 
 local d = Babble.dialogue()
    :addNode("start", function (node)
-      return node:pause(2)
+      return node:wait(2)
          :text("My dialogue system is coming along nicely.\n"):wait()
          :text("It has got"):wait():text("."):wait():text("."):wait():text("."):wait():text(" pauses.\n"):wait()
          :text("C", nil,  {color = {255,   0,   0}})
