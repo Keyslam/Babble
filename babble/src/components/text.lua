@@ -3,11 +3,23 @@ local SubPath = (...):gsub('%.[^%.]+%.[^%.]+$', '')
 local Class    = require(SubPath..".class")
 local Contents = require(SubPath..".contents")
 
+local function isCallable(f)
+   if type(f) == 'function' then
+      return true
+   elseif type(f) == 'table' then
+      local mt = getmetatable(f)
+      if mt and type(mt.__call) == 'function' then
+         return true
+      end
+   end
+
+   return false
+end
+
 local Text = Class()
-function Text:init(node, str, id, options)
+function Text:init(node, str, options)
    self.node        = node
    self.str         = str
-   self.id          = id
    self.pos         = 0
    self.started     = false
    self.currentTime = 0
@@ -25,6 +37,10 @@ end
 
 function Text:update(dt, skip)
    if not self.started then
+      if isCallable(self.str) then
+         self.str = self.str()
+      end
+
       self.node.parent:addContent(self.content)
       self.started = true
    end

@@ -9,7 +9,7 @@ local d = Babble.dialogue()
       return node
          :text("Hello World!\n")
          :link("subpath")
-         :text("Foo. Bar.\n")
+         :text(function() return "I am gaaaayy: " ..love.timer.getTime()..".\n" end)
          :link("subpath")
    end)
 
