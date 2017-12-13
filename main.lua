@@ -6,37 +6,35 @@ local count = 0
 
 local d = Babble.dialogue()
    :addNode("start", function (node)
-      return node:wait(2)
-         :text("My dialogue system is coming along nicely.\n"):wait()
-         :text("It has got"):wait():text("."):wait():text("."):wait():text("."):wait():text(" pauses.\n"):wait()
-         :text("C", nil,  {color = {255,   0,   0}})
-         :text("o", nil,  {color = {  0, 255,   0}})
-         :text("l", nil,  {color = {  0,   0, 255}})
-         :text("o", nil,  {color = {255,   0,   0}})
-         :text("r", nil,  {color = {  0, 255,   0}})
-         :text("e", nil,  {color = {  0,   0, 255}})
-         :text("d ", nil, {color = {255,   0,   0}})
-         :text("t", nil,  {color = {  0, 255,   0}})
-         :text("e", nil,  {color = {  0,   0, 255}})
-         :text("x", nil,  {color = {255,   0,   0}})
-         :text("t", nil,  {color = {  0, 255,   0}})
-         :text("!\n"):wait()
-         :text("And much more!\n")
-         :text("a\na\na\na\n")
+      return node
+         :text("Hello World!\n")
+         :link("subpath")
+         :text("Foo. Bar.\n")
+         :link("subpath")
+   end)
+
+   :addNode("subpath", function(node)
+      return node
+         :text("The time is: " ..love.timer.getTime()..".\n")
    end)
 
    :switch("start")
+
 
 function love.update(dt)
    d:update(dt)
 end
 
 function love.draw()
-   love.graphics.setFont(font)
    love.graphics.rectangle("line", 10, 460, 620, 170)
-   d:draw(20, 470, 600, 150)
+   love.graphics.setFont(font)
+   d:draw(20, 470, 600, 150, false)
+
+   local info = love.graphics.getStats()
+   love.graphics.print(info.drawcalls)
 end
 
 function love.keypressed(key)
    last_pressed = key
+   d:skip()
 end

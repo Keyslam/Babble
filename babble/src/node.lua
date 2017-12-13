@@ -58,12 +58,12 @@ function Node:addComponent(component)
    return self
 end
 
-function Node:update(dt)
+function Node:update(dt, skip)
    local current = self.current.component
    local component = self.components[current]
 
    if component then
-      local state = component:update(dt)
+      local state = component:update(dt, skip)
 
       if state then
          self.current.component = current + 1

@@ -9,10 +9,10 @@ function Wait:init(node, delay)
    self.current = 0
 end
 
-function Wait:update(dt)
+function Wait:update(dt, skip)
    self.current = self.current + dt
 
-   if self.current >= self.delay then
+   if self.current >= self.delay or skip then
       return true
    end
 end
