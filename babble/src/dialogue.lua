@@ -45,7 +45,7 @@ function Dialogue:init()
    self.effects = {
       color     = {255, 255, 255},
       font      = nil,
-      underline = true,
+      underline = false,
    }
 end
 

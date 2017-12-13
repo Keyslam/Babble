@@ -26,13 +26,15 @@ function Text:init(node, str, options)
 
    self.color     = options and options.color or {255, 255, 255}
    self.font      = options and options.font
+   self.underline = options and options.underline or false
    self.typeSpeed = options and options.typeSpeed or 20
    self.typeSound = options and options.typeSound
 
    self.content = Contents.text(id)
    self.content:setText(1, "")
-   self.content:appendEffect(1, {"color", self.color})
-   self.content:appendEffect(1, {"font",  self.font})
+   self.content:appendEffect(1, {"color",     self.color})
+   self.content:appendEffect(1, {"font",      self.font})
+   self.content:appendEffect(1, {"underline", self.underline})
 end
 
 function Text:update(dt, skip)
