@@ -32,9 +32,9 @@ function Text:init(node, str, options)
    self.explicit  = options and options.explicit
 
    self.content = Contents.text(id)
-   self.content:appendModifier(1, {"color",     self.color})
-   self.content:appendModifier(1, {"font",      self.font})
-   self.content:appendModifier(1, {"underline", self.underline})
+   self.content:appendModifier(1, "color",     self.color)
+   self.content:appendModifier(1, "font",      self.font)
+   self.content:appendModifier(1, "underline", self.underline)
 
    self.content:setText(1, "")
 end

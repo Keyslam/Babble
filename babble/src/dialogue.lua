@@ -129,8 +129,8 @@ function Dialogue:render(w, h)
                self:renderText(currentText)
             end
 
-            for _, modifier in ipairs(content.modifiers[i]) do
-               self.modifiers[modifier[1]] = modifier[2]
+            for name, value in pairs(content.modifiers[i]) do
+               self.modifiers[name] = value
             end
 
             currentText = ""

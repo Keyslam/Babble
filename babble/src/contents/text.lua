@@ -20,12 +20,12 @@ function Text:appendText(text)
    return index
 end
 
-function Text:appendModifier(index, modifier)
+function Text:appendModifier(index, name, value)
    if not self.modifiers[index] then
       self.modifiers[index] = {}
    end
 
-   self.modifiers[index][#self.modifiers[index] + 1] = modifier
+   self.modifiers[index][name] = value
 end
 
 return Text
