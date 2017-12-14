@@ -5,7 +5,6 @@ local font  = love.graphics.newFont("LCD_Solid.ttf", 25)
 local d = Babble.dialogue()
    :addNode("start", function (node)
       return node
-         :wait(2)
          :text("We can do a sine wave.\n", {explicit = true, font = font})
          :text(" \n")
          :text("Or just shake in fear.\n", {explicit = true, font = font})
@@ -83,6 +82,11 @@ end
 function love.keypressed(key)
    if key == "s" then
       d:skip()
+   end
+
+   if key == "c" then
+      d:clear()
+      d:switch("start")
    end
 
    last_pressed = key

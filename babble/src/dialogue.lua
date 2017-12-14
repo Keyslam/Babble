@@ -91,6 +91,11 @@ function Dialogue:addContent(content)
    self.dirty = true
 end
 
+function Dialogue:clear()
+   self.contents = {}
+   self.dirty    = true
+end
+
 function Dialogue:skip()
    self:update(0, true)
 end
