@@ -24,19 +24,21 @@ function Text:init(node, str, options)
    self.started     = false
    self.currentTime = 0
 
-   self.color     = options and options.color     or {255, 255, 255}
-   self.font      = options and options.font      or love.graphics.getFont()
-   self.underline = options and options.underline or false
-   self.offset    = options and options.offset    or {0, 0}
-   self.typeSpeed = options and options.typeSpeed or 20
-   self.typeSound = options and options.typeSound
-   self.explicit  = options and options.explicit
+   self.color         = options and options.color         or {255, 255, 255}
+   self.font          = options and options.font          or love.graphics.getFont()
+   self.underline     = options and options.underline     or false
+   self.strikethrough = options and options.strikethrough or false
+   self.offset        = options and options.offset        or {0, 0}
+   self.typeSpeed     = options and options.typeSpeed     or 20
+   self.typeSound     = options and options.typeSound
+   self.explicit      = options and options.explicit
 
    self.content = Contents.text(id)
-   self.content:setModifier(1, "color",     self.color)
-   self.content:setModifier(1, "font",      self.font)
-   self.content:setModifier(1, "underline", self.underline)
-   self.content:setModifier(1, "offset",    self.offset)
+   self.content:setModifier(1, "color",         self.color)
+   self.content:setModifier(1, "font",          self.font)
+   self.content:setModifier(1, "underline",     self.underline)
+   self.content:setModifier(1, "strikethrough", self.strikethrough)
+   self.content:setModifier(1, "offset",        self.offset)
 end
 
 function Text:update(dt, skip)

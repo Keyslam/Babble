@@ -8,5 +8,6 @@ Components.script = require(Path..".script")
 Components.setter = require(Path..".setter")
 Components.text   = require(Path..".text")
 Components.wait   = require(Path..".wait")
+Components.clear  = require(Path..".clear")
 
 return Components

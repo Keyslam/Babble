@@ -159,19 +159,29 @@ function Dialogue:render(w, h)
    }
 end
 
+local function lineIsVisible(line)
+   return line ~= " " and line ~= "\n"
+end
+
 function Dialogue:renderText(text)
    for line in text:gmatch("[^\r\n]+") do
-      self.buffer[#self.buffer + 1] = {
-         text = line,
-         x    = self.curX + self.modifiers.offset[1],
-         y    = self.curY + self.modifiers.offset[2],
+      if lineIsVisible(line) then
+         self.buffer[#self.buffer + 1] = {
+            text = line,
+            x    = self.curX + self.modifiers.offset[1],
+            y    = self.curY + self.modifiers.offset[2],
 
-         color = self.modifiers.color,
-         font  = self.modifiers.font,
-      }
+            color = self.modifiers.color,
+            font  = self.modifiers.font,
+         }
+      end
 
       if self.modifiers.underline then
          self:renderUnderline(line)
+      end
+
+      if self.modifiers.strikethrough then
+         self:renderStrikethrough(line)
       end
 
       self.curH = math.max(self.curH, self.modifiers.font:getHeight())
@@ -199,6 +209,18 @@ function Dialogue:renderUnderline(line)
       color = self.modifiers.color,
    }
 end
+
+function Dialogue:renderStrikethrough(line)
+   self.buffer[#self.buffer + 1] = {
+      line = true,
+      x    = self.curX,
+      y    = self.curY + (self.modifiers.font:getHeight() + self.modifiers.font:getDescent()) / 2,
+      w    = self.modifiers.font:getWidth(line),
+
+      color = self.modifiers.color,
+   }
+end
+
 
 function Dialogue:draw(x, y, w, h, drawBB)
    if self.dirty then
