@@ -24,19 +24,19 @@ function Text:init(node, str, options)
    self.started     = false
    self.currentTime = 0
 
-   self.color     = options and options.color or {255, 255, 255}
-   self.font      = options and options.font or love.graphics.getFont()
+   self.color     = options and options.color     or {255, 255, 255}
+   self.font      = options and options.font      or love.graphics.getFont()
    self.underline = options and options.underline or false
+   self.offset    = options and options.offset    or {0, 0}
    self.typeSpeed = options and options.typeSpeed or 20
    self.typeSound = options and options.typeSound
    self.explicit  = options and options.explicit
 
    self.content = Contents.text(id)
-   self.content:appendModifier(1, "color",     self.color)
-   self.content:appendModifier(1, "font",      self.font)
-   self.content:appendModifier(1, "underline", self.underline)
-
-   self.content:setText(1, "")
+   self.content:setModifier(1, "color",     self.color)
+   self.content:setModifier(1, "font",      self.font)
+   self.content:setModifier(1, "underline", self.underline)
+   self.content:setModifier(1, "offset",    self.offset)
 end
 
 function Text:update(dt, skip)
@@ -68,7 +68,14 @@ function Text:update(dt, skip)
          end
       end
    else
-      self.content:setText(1, self.str)
+      if not self.explicit then
+         self.content:setText(1, self.str)
+      else
+         for i = self.pos, #self.str do
+            self.content:setText(i, self.str:sub(i, i))
+         end
+      end
+
       return true
    end
 end

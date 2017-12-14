@@ -158,8 +158,8 @@ function Dialogue:renderText(text)
    for line in text:gmatch("[^\r\n]+") do
       self.buffer[#self.buffer + 1] = {
          text = line,
-         x    = self.curX,
-         y    = self.curY,
+         x    = self.curX + self.modifiers.offset[1],
+         y    = self.curY + self.modifiers.offset[2],
 
          color = self.modifiers.color,
          font  = self.modifiers.font,

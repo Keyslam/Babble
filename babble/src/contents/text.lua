@@ -20,7 +20,7 @@ function Text:appendText(text)
    return index
 end
 
-function Text:appendModifier(index, name, value)
+function Text:setModifier(index, name, value)
    if not self.modifiers[index] then
       self.modifiers[index] = {}
    end
