@@ -42,10 +42,11 @@ function Dialogue:init()
    self.buffer = {}
    self.dirty  = true
 
-   self.effects = {
+   self.modifiers = {
       color     = {255, 255, 255},
-      font      = nil,
+      font      = love.graphics.getFont(),
       underline = false,
+      offset    = {0, 0},
    }
 end
 
@@ -113,21 +114,23 @@ function Dialogue:update(dt, skip)
 end
 
 function Dialogue:render(w, h)
-   self.buffer = {}
-   self.curX   = 0
-   self.curY   = 0
+   self.buffer  = {}
+   self.curLine = {}
+   self.curX    = 0
+   self.curY    = 0
+   self.curH    = 0
 
    for _, content in ipairs(self.contents) do
       local currentText = ""
 
       for i, text in ipairs(content.text) do
-         if content.effects[i] then
+         if content.modifiers[i] then
             if currentText ~= "" then
                self:renderText(currentText)
             end
 
-            for _, effect in ipairs(content.effects[i]) do
-               self.effects[effect[1]] = effect[2]
+            for _, modifier in ipairs(content.modifiers[i]) do
+               self.modifiers[modifier[1]] = modifier[2]
             end
 
             currentText = ""
@@ -137,9 +140,6 @@ function Dialogue:render(w, h)
       end
 
       self:renderText(currentText)
-
-      --local _, count = string.gsub(content.text[1], " ", "")
-      --print(content.text[1], count)
    end
 
    self.buffer[#self.buffer + 1] = {
@@ -155,36 +155,44 @@ function Dialogue:render(w, h)
 end
 
 function Dialogue:renderText(text)
-   local font = self.effects.font or love.graphics.getFont()
-
    for line in text:gmatch("[^\r\n]+") do
       self.buffer[#self.buffer + 1] = {
          text = line,
          x    = self.curX,
          y    = self.curY,
 
-         color = self.effects.color,
-         font  = font,
+         color = self.modifiers.color,
+         font  = self.modifiers.font,
       }
 
-      if self.effects.underline then
-         self.buffer[#self.buffer + 1] = {
-            line = true,
-            x    = self.curX,
-            y    = self.curY + font:getHeight() + font:getDescent(),
-            w    = font:getWidth(line),
-
-            color = self.effects.color,
-         }
+      if self.modifiers.underline then
+         self:renderUnderline(line)
       end
 
-      if text:find("\n") then
-         self.curX = 0
-         self.curY = self.curY + font:getHeight()
+      self.curH = math.max(self.curH, self.modifiers.font:getHeight())
+
+      local _, count = text:gsub('\n', '\n')
+      if count > 0 then
+         for i = 1, count do
+            self.curX = 0
+            self.curY = self.curY + self.curH
+         end
+         self.curH = 0
       else
-         self.curX = self.curX + font:getWidth(line)
+         self.curX = self.curX + self.modifiers.font:getWidth(line)
       end
    end
+end
+
+function Dialogue:renderUnderline(line)
+   self.buffer[#self.buffer + 1] = {
+      line = true,
+      x    = self.curX,
+      y    = self.curY + self.modifiers.font:getHeight() + self.modifiers.font:getDescent(),
+      w    = self.modifiers.font:getWidth(line),
+
+      color = self.modifiers.color,
+   }
 end
 
 function Dialogue:draw(x, y, w, h, drawBB)

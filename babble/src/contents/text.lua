@@ -4,9 +4,9 @@ local Class = require(SubPath..".class")
 
 local Text = Class()
 function Text:init(id)
-   self.id      = id or tostring(os.time())
-   self.text    = {}
-   self.effects = {}
+   self.id        = id or tostring(os.time())
+   self.text      = {}
+   self.modifiers = {}
 end
 
 function Text:setText(index, text)
@@ -20,12 +20,12 @@ function Text:appendText(text)
    return index
 end
 
-function Text:appendEffect(index, effect)
-   if not self.effects[index] then
-      self.effects[index] = {}
+function Text:appendModifier(index, modifier)
+   if not self.modifiers[index] then
+      self.modifiers[index] = {}
    end
 
-   self.effects[index][#self.effects[index] + 1] = effect
+   self.modifiers[index][#self.modifiers[index] + 1] = modifier
 end
 
 return Text

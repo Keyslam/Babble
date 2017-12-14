@@ -8,9 +8,9 @@ local count = 0
 local d = Babble.dialogue()
    :addNode("start", function (node)
       return node
-         :text("Hello World!\n")
+         :text("Hello World!\n\n", {explicit = true, font = font})
          :link("subpath")
-         :text("Underlines work\n", {underline = true})
+         :text("Underlines work\n\n\n", {underline = true, font = font})
          :link("subpath")
    end)
 
@@ -20,7 +20,6 @@ local d = Babble.dialogue()
    end)
 
    :switch("start")
-
 
 function love.update(dt)
    d:update(dt)
